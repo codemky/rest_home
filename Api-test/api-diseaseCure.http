@@ -1,0 +1,74 @@
+POST http://localhost:8080/rest_home/diseaseCure/selectById?id=24
+Accept: text/html
+Content-Type: application/json
+
+{
+
+
+}
+
+
+###
+
+POST http://localhost:8080/rest_home/diseaseCure/selectByCriteria
+Accept: text/html
+Content-Type: application/json
+
+
+{
+  "num": "158",
+  "typename": "模板病种",
+  "patientname": "测试",
+  "doctorname": null,
+  "ordername": null,
+  "ordertype": null,
+  "state": null,
+  "begincreate" : null,
+  "endcreate" : null,
+  "beginupdate" : null,
+  "endupdate" : null
+}
+
+###
+
+POST http://localhost:8080/rest_home/diseaseCure/add
+Accept: text/html
+Content-Type: application/json
+
+{
+  "content": "尝试给予抗生素药物进行治疗",
+  "caseid": 2222,
+  "patientid": 8888,
+  "doctorid": 77777
+
+}
+
+
+###
+POST http://localhost:8080/rest_home/diseaseCure/update
+Accept: text/html
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "模板病种4xx",
+  "symptom": "模板症状4444"
+}
+
+
+###
+POST http://localhost:8080/rest_home/diseaseCure/deleteById?id=4
+Accept: text/html
+Content-Type: application/json
+
+{
+  "code": 233,
+  "msg": "success",
+  "data": null
+}
+
+###
+
+175.24.132.190
+
+###

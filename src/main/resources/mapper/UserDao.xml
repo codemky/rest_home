@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserDao">
+
+    <resultMap type="com.entity.User" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="sexy" column="sexy" jdbcType="VARCHAR"/>
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="addr" column="addr" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          id, username, password, name, age, sexy, idcard, phone, addr, role
+        from resthome.user
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          id, username, password, name, age, sexy, idcard, phone, addr, role
+        from resthome.user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+          id, username, password, name, age, sexy, idcard, phone, addr, role
+        from resthome.user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%${name}%'
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="sexy != null and sexy != ''">
+                and sexy = #{sexy}
+            </if>
+            <if test="idcard != null and idcard != ''">
+                and idcard like '%${idcard}%'
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone like '%${phone}%'
+            </if>
+            <if test="addr != null and addr != ''">
+                and addr like '%${addr}%'
+            </if>
+            <if test="role != null">
+                and role = #{role}
+            </if>
+            <if test="tempname != null">
+                and username = #{tempname}
+            </if>
+        </where>
+    </select>
+
+    <!--查询用户名是否重复-->
+    <select id="checkUsername" resultMap="UserMap">
+        select
+        id, username, password, name, age, sexy, idcard, phone, addr, role
+        from resthome.user
+        <where>
+            <if test="tempname != null">
+                and username = #{tempname}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into resthome.user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="username != null and username != ''">
+                username,
+            </if>
+            <if test="password != null and password != ''">
+                password,
+            </if>
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="sexy != null and sexy != ''">
+                sexy,
+            </if>
+            <if test="idcard != null and idcard != ''">
+                idcard,
+            </if>
+            <if test="phone != null and phone != ''">
+                phone,
+            </if>
+            <if test="addr != null and addr != ''">
+                addr,
+            </if>
+            <if test="role != null">
+                role
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="username != null and username != ''">
+                #{username},
+            </if>
+            <if test="password != null and password != ''">
+                #{password},
+            </if>
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="age != null">
+                #{age},
+            </if>
+            <if test="sexy != null and sexy != ''">
+                #{sexy},
+            </if>
+            <if test="idcard != null and idcard != ''">
+                #{idcard},
+            </if>
+            <if test="phone != null and phone != ''">
+                #{phone},
+            </if>
+            <if test="addr != null and addr != ''">
+                #{addr},
+            </if>
+            <if test="role != null">
+                #{role},
+            </if>
+        </trim>
+
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update resthome.user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="sexy != null and sexy != ''">
+                sexy = #{sexy},
+            </if>
+            <if test="idcard != null and idcard != ''">
+                idcard = #{idcard},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="addr != null and addr != ''">
+                addr = #{addr},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from resthome.user where id = #{id}
+    </delete>
+
+</mapper>

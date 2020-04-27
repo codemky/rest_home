@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CureMonitorExtDao">
+
+    <resultMap type="com.entity.vo.CureMonitorVO" id="CureMonitorVOMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="curecontent" column="cureContent" jdbcType="LONGVARCHAR"/>
+        <result property="monitorcontent" column="monitorContent" jdbcType="LONGVARCHAR"/>
+        <result property="sugar" column="sugar" jdbcType="FLOAT"/>
+        <result property="highpressure" column="highpressure" jdbcType="INTEGER"/>
+        <result property="lowpressure" column="lowpressure" jdbcType="INTEGER"/>
+        <result property="cureresult" column="cureResult" jdbcType="VARCHAR"/>
+        <result property="monitorresult" column="monitorResult" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="caseid" column="caseid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="doctorid" column="doctorid" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+        <result property="remindtime" column="remindtime" jdbcType="TIMESTAMP"/>
+
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="patientname" column="pname" jdbcType="VARCHAR"/>
+        <result property="doctorname" column="dname" jdbcType="VARCHAR"/>
+        <result property="typename" column="tname" jdbcType="VARCHAR"/>
+
+        <result property="state" column="state" jdbcType="BOOLEAN"/>
+        <collection property="medicineVOList" ofType="com.entity.vo.CureMedicineVO">
+            <id property="id" column="mid"/>
+            <result property="name" column="mname"/>
+            <result property="unit" column="unit"/>
+            <result property="number" column="number"/>
+        </collection>
+        <collection property="fileList" ofType="com.entity.Files">
+            <id property="id" column="fid"/>
+            <result property="name" column="fname"/>
+            <result property="path" column="fpath"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectByCriteria" resultMap="CureMonitorVOMap">
+        select cr.id,
+        cr.num,
+        cr.sugar,
+        cr.lowpressure,
+        cr.highpressure,
+        cr.cureContent,
+        cr.monitorContent,
+        cr.cureResult,
+        cr.monitorResult,
+        cr.remark,
+        caseid,
+        cr.patientid,
+        cr.doctorid,
+        createtime,
+        updatetime,
+        remindtime,
+        u1.name pname,
+        u1.idcard,
+        u2.name dname,
+        dt.name tname,
+        md.name mname,
+        md.id   mid,
+        md.unit,
+        cm.number,
+        fl.id fid,
+        fl.name fname,
+        fl.path fpath
+        from cure_monitor cr
+        left join user u1 on u1.id = cr.patientid
+        left join user u2 on u2.id = cr.doctorid
+        left join cure_medicine cm on cm.cureid = cr.id
+        left join medicine md on md.id = cm.medicineid
+        left join disease_case dca on dca.id = cr.caseid
+        left join disease_type dt on dca.typeid = dt.id
+        left join files fl on fl.infoid = cr.id and fl.module = '治疗'
+        <where>
+            <if test="MonitorCriteria.id != null">
+                and cr.id = #{MonitorCriteria.id}
+            </if>
+            <if test="MonitorCriteria.patientid != null">
+                and cr.patientid = #{MonitorCriteria.patientid}
+            </if>
+            <if test="MonitorCriteria.doctorid != null">
+                and cr.doctorid = #{MonitorCriteria.doctorid}
+            </if>
+            <if test="MonitorCriteria.state != null">
+                and cr.state = #{MonitorCriteria.state}
+            </if>
+            <if test="MonitorCriteria.num != null and MonitorCriteria.num != '' ">
+                and cr.num like '%${MonitorCriteria.num}%'
+            </if>
+            <if test="MonitorCriteria.patientname != null and MonitorCriteria.patientname != '' ">
+                and u1.name like '%${MonitorCriteria.patientname}%'
+            </if>
+            <if test="MonitorCriteria.doctorname != null and MonitorCriteria.doctorname != '' ">
+                and u2.name like '%${MonitorCriteria.doctorname}%'
+            </if>
+            <if test="MonitorCriteria.typename != null and MonitorCriteria.typename != '' ">
+                and dt.name like '%${MonitorCriteria.typename}%'
+            </if>
+            <if test="MonitorCriteria.begincreate != null and MonitorCriteria.endcreate != null">
+                and cr.createtime between #{MonitorCriteria.begincreate} and #{MonitorCriteria.endcreate}
+            </if>
+            <if test="MonitorCriteria.beginupdate != null and MonitorCriteria.endupdate != null">
+                and cr.updatetime between #{MonitorCriteria.beginupdate} and #{MonitorCriteria.endupdate}
+            </if>
+            <if test="MonitorCriteria.beginremind != null and MonitorCriteria.endremind != null">
+                and cr.remindtime between #{MonitorCriteria.beginremind} and #{MonitorCriteria.endremind}
+            </if>
+
+        </where>
+        <if test="MonitorCriteria.ordername != null and MonitorCriteria.ordername != ''
+                and MonitorCriteria.ordertype != null and MonitorCriteria.ordertype != '' ">
+            order by ${MonitorCriteria.ordername} ${MonitorCriteria.ordertype}
+        </if>
+
+    </select>
+
+    
+
+</mapper>

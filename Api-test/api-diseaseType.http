@@ -1,0 +1,73 @@
+POST http://localhost:8080/rest_home/diseaseType/selectById?id=1
+Accept: text/html
+Content-Type: application/json
+
+
+###
+
+
+POST http://175.24.132.190:8080/rest_home/diseaseType/selectAll
+Accept: text/html
+Content-Type: application/json
+
+{
+}
+
+
+###
+
+POST http://localhost:8080/rest_home/diseaseType/selectByName
+Accept: text/html
+Content-Type: application/json
+
+{
+  "name": "模板病种1"
+}
+
+###
+
+POST http://localhost:8080/rest_home/diseaseType/add
+Accept: text/html
+Content-Type: application/json
+
+{
+  "name": "模板病种33xx",
+  "symptom": "模板症状3"
+}
+
+
+
+###
+POST http://localhost:8080/rest_home/diseaseType/update
+Accept: text/html
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "模板病种4xx",
+  "symptom": "模板症状4444"
+}
+
+
+###
+POST http://localhost:8080/rest_home/diseaseType/deleteById?id=4
+Accept: text/html
+Content-Type: application/json
+
+{
+  "code": 233,
+  "msg": "success",
+  "data": null
+}
+
+###
+
+175.24.132.190
+
+###
+
+
+
+POST http://175.24.132.190:8080/rest_home/diseaseCase/selectAllUserCaseByUserId?id=4
+
+###

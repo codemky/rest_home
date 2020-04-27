@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CureMedicineExtDao">
+
+    <resultMap type="com.entity.CureMedicine" id="CureMedicineMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="cureid" column="cureid" jdbcType="INTEGER"/>
+        <result property="medicineid" column="medicineid" jdbcType="INTEGER"/>
+        <result property="number" column="number" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <insert id="insertList" parameterType="com.entity.CureMedicine">
+        insert into cure_medicine(
+        cureid,medicineid,number
+        )
+        VALUES
+        <foreach collection="cureMedicines" index="index" item="item" separator=",">
+            ( #{item.cureid}, #{item.medicineid}, #{item.number} )
+        </foreach>
+
+    </insert>
+
+    <!-- 批量删除药品用量信息 -->
+    <delete id="deleteList" parameterType="int">
+        delete from cure_medicine where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

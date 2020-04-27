@@ -1,0 +1,65 @@
+POST http://localhost:8080/rest_home/medicine/selectById?id=1
+Accept: text/html
+Content-Type: application/json
+
+
+
+###
+
+POST http://localhost:8080/rest_home/medicine/selectAll
+Accept: text/html
+Content-Type: application/json
+
+
+
+###
+
+POST http://localhost:8080/rest_home/medicine/selectByMedicine
+Accept: text/html
+Content-Type: application/json
+
+{
+  "name": "头孢",
+  "unit": "盒"
+}
+
+###
+
+POST http://localhost:8080/rest_home/medicine/add
+Accept: text/html
+Content-Type: application/json
+
+{
+  "name": "头孢包b",
+  "unit": "箱"
+}
+
+
+###
+POST http://localhost:8080/rest_home/medicine/update
+Accept: text/html
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "头孢包bao",
+  "unit": "盒"
+}
+
+
+###
+POST http://localhost:8080/rest_home/medicine/deleteById?id=4
+Accept: text/html
+Content-Type: application/json
+
+{
+  "code": 233,
+  "msg": "success",
+  "data": null
+}
+
+###
+
+175.24.132.190
+
+###

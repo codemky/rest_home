@@ -1,0 +1,102 @@
+POST http://localhost:8080/rest_home/diseaseCase/selectById?id=24
+Accept: text/html
+Content-Type: application/json
+
+{
+
+
+}
+
+
+###
+
+POST http://175.24.132.190:8080/rest_home/diseaseCase/selectByCriteria
+Accept: text/html
+Content-Type: application/json
+
+{
+  "num": "1",
+  "typename": "模板病种1xx",
+  "patientname": "测试",
+  "patientid" : null,
+  "applyid" : null,
+  "checkid" : null,
+  "applyname": null,
+  "checkname": null,
+  "ordertype": null,
+  "state": null,
+  "beginapply" : null,
+  "endapply" : null,
+  "beginattack" : null,
+  "endattack" : null,
+  "begincheck" : "2020-04-11 12:01:03",
+  "endcheck" : "2020-04-25 11:58:07"
+
+}
+
+
+###
+
+POST http://localhost:8080/rest_home/diseaseCase/add
+Accept: text/html
+Content-Type: application/json
+
+{
+  "content": "尝试给予抗生素药物进行治疗",
+  "caseid": 2222,
+  "patientid": 8888,
+  "doctorid": 77777
+
+}
+
+
+###
+POST http://localhost:8080/rest_home/diseaseCase/update
+Accept: text/html
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "模板病种4xx",
+  "symptom": "模板症状4444"
+}
+
+
+###
+
+POST http://localhost:8080/rest_home/diseaseCase/selectAllWithoutCure
+Accept: text/html
+Content-Type: application/json
+
+{
+  "applyid": 77777
+}
+
+
+###
+
+POST http://localhost:8080/rest_home/diseaseCase/selectAllWithoutCheck
+Accept: text/html
+Content-Type: application/json
+
+{
+
+}
+
+
+###
+POST http://localhost:8080/rest_home/diseaseCase/deleteById?id=3
+Accept: text/html
+Content-Type: application/json
+
+{
+  "code": 233,
+  "msg": "success",
+  "data": null
+}
+
+###
+
+175.24.132.190
+
+###

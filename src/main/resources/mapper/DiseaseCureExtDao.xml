@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.DiseaseCureExtDao">
+
+    <resultMap type="com.entity.DiseaseCure" id="DiseaseCureMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="LONGVARCHAR"/>
+        <result property="result" column="result" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="caseid" column="caseid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="doctorid" column="doctorid" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap type="com.entity.vo.DiseaseCureVO" id="DiseaseCureVOList">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="result" column="result" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="caseid" column="caseid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="doctorid" column="doctorid" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+        <result property="patientname" column="pname" jdbcType="VARCHAR"/>
+        <result property="doctorname" column="dname" jdbcType="VARCHAR"/>
+        <result property="typename" column="tname" jdbcType="VARCHAR"/>
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="BOOLEAN"/>
+        <collection property="medicineVOList" ofType="com.entity.vo.CureMedicineVO">
+            <id property="id" column="mid"/>
+            <result property="name" column="mname"/>
+            <result property="unit" column="unit"/>
+            <result property="number" column="number"/>
+        </collection>
+
+    </resultMap>
+
+    <resultMap type="com.entity.vo.DiseaseCureVO" id="DiseaseCureVO">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="result" column="result" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="caseid" column="caseid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="doctorid" column="doctorid" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+        <result property="patientname" column="pname" jdbcType="VARCHAR"/>
+        <result property="doctorname" column="dname" jdbcType="VARCHAR"/>
+        <result property="typename" column="tname" jdbcType="VARCHAR"/>
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="BOOLEAN"/>
+        <collection property="medicineVOList" ofType="com.entity.vo.CureMedicineVO">
+            <id property="id" column="mid"/>
+            <result property="name" column="mname"/>
+            <result property="unit" column="unit"/>
+            <result property="number" column="number"/>
+        </collection>
+        <collection property="fileList" ofType="com.entity.Files">
+            <id property="id" column="fid"/>
+            <result property="name" column="fname"/>
+            <result property="path" column="fpath"/>
+        </collection>
+
+    </resultMap>
+
+
+    <select id="selectByCriteria" resultMap="DiseaseCureVO">
+        select dc.id,
+                dc.num,
+                dc.result,
+                dc.remark,
+                caseid,
+                content,
+                dc.patientid,
+                doctorid,
+                createtime,
+                updatetime,
+                dc.state,
+                u1.name pname,
+                u1.idcard,
+                u2.name dname,
+                md.name mname,
+                md.id   mid,
+                md.unit,
+                cm.number,
+                dt.name tname,
+                fl.id fid,
+                fl.name fname,
+                fl.path fpath
+        from disease_cure dc
+                 left join user u1 on u1.id = dc.patientid
+                 left join user u2 on u2.id = dc.doctorid
+                 left join cure_medicine cm on cm.cureid = dc.id
+                 left join medicine md on md.id = cm.medicineid
+                 left join disease_case dca on dca.id = dc.caseid
+                 left join disease_type dt on dca.typeid = dt.id
+                 left join files fl on fl.infoid = dc.id and fl.module = '治疗'
+        <where>
+            <if test="CureCriteria.id != null">
+                and dc.id = #{CureCriteria.id}
+            </if>
+            <if test="CureCriteria.state != null">
+                and dc.state = #{CureCriteria.state}
+            </if>
+            <if test="CureCriteria.num != null and CureCriteria.num != '' ">
+                and dc.num like '%${CureCriteria.num}%'
+            </if>
+            <if test="CureCriteria.patientname != null and CureCriteria.patientname != '' ">
+                and u1.name like '%${CureCriteria.patientname}%'
+            </if>
+            <if test="CureCriteria.doctorname != null and CureCriteria.doctorname != '' ">
+                and u2.name like '%${CureCriteria.doctorname}%'
+            </if>
+            <if test="CureCriteria.typename != null and CureCriteria.typename != '' ">
+                and dt.name like '%${CureCriteria.typename}%'
+            </if>
+            <if test="CureCriteria.begincreate != null and CureCriteria.endcreate != null">
+                and dc.createtime between #{CureCriteria.begincreate} and #{CureCriteria.endcreate}
+            </if>
+            <if test="CureCriteria.beginupdate != null and CureCriteria.endupdate != null">
+                and dc.updatetime between #{CureCriteria.beginupdate} and #{CureCriteria.endupdate}
+            </if>
+
+        </where>
+        <if test="CureCriteria.ordername != null and CureCriteria.ordername != ''
+                and CureCriteria.ordertype != null and CureCriteria.ordertype != '' ">
+            order by ${CureCriteria.ordername} ${CureCriteria.ordertype}
+        </if>
+
+    </select>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="DiseaseCureVO">
+        select dc.id,
+                dc.num,dc.content,
+                dc.result,
+                dc.remark,
+                caseid,
+                dc.patientid,
+                doctorid,
+                createtime,
+                updatetime,
+                dc.state,
+                u1.name pname,
+                u1.idcard,
+                u2.name dname,
+                md.name mname,
+                md.id   mid,
+                md.unit,
+                cm.number,
+                dt.name tname,
+                fl.id fid,
+                fl.name fname,
+                fl.path fpath
+        from disease_cure dc
+                 left join user u1 on u1.id = dc.patientid
+                 left join user u2 on u2.id = dc.doctorid
+                 left join cure_medicine cm on cm.cureid = dc.id
+                 left join medicine md on md.id = cm.medicineid
+                 left join disease_case dca on dca.id = dc.caseid
+                 left join disease_type dt on dca.typeid = dt.id
+                 left join files fl on fl.infoid = dc.id and fl.module = '治疗'
+        where dc.id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+
+
+
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.FilesExtDao">
+
+    <resultMap type="com.entity.Files" id="FilesMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="module" column="module" jdbcType="VARCHAR"/>
+        <result property="infoid" column="infoid" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    
+
+</mapper>

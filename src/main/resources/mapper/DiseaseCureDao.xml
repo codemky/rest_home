@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.DiseaseCureDao">
+
+    <resultMap type="com.entity.DiseaseCure" id="DiseaseCureMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="LONGVARCHAR"/>
+        <result property="result" column="result" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="caseid" column="caseid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="doctorid" column="doctorid" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+        <result property="state" column="state" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DiseaseCureMap">
+        select
+          id, num, content, result, remark, caseid, patientid, doctorid, createtime, updatetime,state
+        from resthome.disease_cure
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DiseaseCureMap">
+        select
+          id, num, content, result, remark, caseid, patientid, doctorid, createtime, updatetime,state
+        from resthome.disease_cure
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DiseaseCureMap">
+        select
+          id, num, content, result, remark, caseid, patientid, doctorid, createtime, updatetime,state
+        from resthome.disease_cure
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="num != null and num != ''">
+                and num = #{num}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="result != null and result != ''">
+                and result = #{result}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="caseid != null">
+                and caseid = #{caseid}
+            </if>
+            <if test="patientid != null">
+                and patientid = #{patientid}
+            </if>
+            <if test="doctorid != null">
+                and doctorid = #{doctorid}
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime}
+            </if>
+            <if test="updatetime != null">
+                and updatetime = #{updatetime}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into resthome.disease_cure
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="num != null" >
+                num,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="result != null" >
+                result,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="caseid != null" >
+                caseid,
+            </if>
+            <if test="patientid != null" >
+                patientid,
+            </if>
+            <if test="doctorid != null" >
+                doctorid,
+            </if>
+            <if test="createtime != null" >
+                createtime,
+            </if>
+            <if test="updatetime != null" >
+                updatetime,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null and num != ''">
+                #{num},
+            </if>
+            <if test="content != null and content != ''">
+                #{content},
+            </if>
+            <if test="result != null and result != ''">
+                #{result},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+            <if test="caseid != null">
+                #{caseid},
+            </if>
+            <if test="patientid != null">
+                #{patientid},
+            </if>
+            <if test="doctorid != null">
+                #{doctorid},
+            </if>
+            <if test="createtime != null">
+                #{createtime},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+        </trim>
+
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update resthome.disease_cure
+        <set>
+            <if test="num != null and num != ''">
+                num = #{num},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="result != null and result != ''">
+                result = #{result},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="caseid != null">
+                caseid = #{caseid},
+            </if>
+            <if test="patientid != null">
+                patientid = #{patientid},
+            </if>
+            <if test="doctorid != null">
+                doctorid = #{doctorid},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from resthome.disease_cure where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,100 @@
+POST http://localhost:8080/rest_home/user/selectById?id=1
+Accept: text/html
+Content-Type: application/json
+
+
+
+###
+POST http://175.24.132.190:8080/rest_home/user/updatePwd
+Accept: text/html
+Content-Type: application/json
+
+{
+  "id": 1,
+  "password": "123123",
+  "newPwd": "123321"
+}
+
+
+###
+POST http://175.24.132.190:8080/rest_home/user/checkUsername?username=trp
+Accept: text/html
+Content-Type: application/json
+
+
+
+###
+
+POST http://175.24.132.190:8080/rest_home/user/selectByUser
+Accept: text/html
+Content-Type: application/json
+
+{
+
+}
+
+###
+
+POST http://localhost:8080/rest_home/user/selectAllPatients
+Accept: text/html
+Content-Type: application/json
+
+
+###
+
+POST http://localhost:8080/rest_home/user/add
+Accept: text/html
+Content-Type: application/json
+
+{
+  "addr": "美国纽约华盛顿白宫xxx号房",
+  "age": -111,
+  "idcard": "string",
+  "name": "特朗普儿子",
+  "password": "123123",
+  "phone": "13148242221",
+  "role": 1,
+  "sexy": "女",
+  "username": "trp"
+}
+
+
+###
+POST http://175.24.132.190:8080/rest_home/user/update
+Accept: text/html
+Content-Type: application/json
+
+
+{
+  "id": 11,
+  "username": "123122",
+  "password": "123123",
+  "name": "模板名2",
+  "age": 122,
+  "sexy": "女",
+  "idcard": "51343620000420982X",
+  "phone": "13043232323",
+  "addr": "告诉你？",
+  "role": 1,
+  "page": null,
+  "pageSize": null
+}
+
+
+###
+POST http://localhost:8080/rest_home/user/login
+Accept: text/html
+Content-Type: application/json
+
+{
+  "username": "123122",
+  "password": "122",
+  "role": 1
+}
+
+
+###
+
+175.24.132.190
+
+###

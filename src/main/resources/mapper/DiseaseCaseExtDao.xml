@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.DiseaseCaseExtDao">
+
+    <resultMap type="com.entity.vo.CaseStatictisVO" id="CaseStatistic">
+        <result property="typename" column="tname" jdbcType="VARCHAR"/>
+        <result property="sum" column="tsum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="com.entity.DiseaseCase" id="DiseaseCaseMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="sugar" column="sugar" jdbcType="FLOAT"/>
+        <result property="highpressure" column="highpressure" jdbcType="INTEGER"/>
+        <result property="lowpressure" column="lowpressure" jdbcType="INTEGER"/>
+        <result property="symptom" column="symptom" jdbcType="LONGVARCHAR"/>
+        <result property="attacktime" column="attacktime" jdbcType="TIMESTAMP"/>
+        <result property="applyid" column="applyid" jdbcType="INTEGER"/>
+        <result property="checkid" column="checkid" jdbcType="INTEGER"/>
+        <result property="applytime" column="applytime" jdbcType="TIMESTAMP"/>
+        <result property="checktime" column="checktime" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="result" column="result" jdbcType="BOOLEAN"/>
+        <result property="typeid" column="typeid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="com.entity.vo.DiseaseCaseVO" id="DiseaseCaseVO">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="VARCHAR"/>
+        <result property="sugar" column="sugar" jdbcType="FLOAT"/>
+        <result property="highpressure" column="highpressure" jdbcType="INTEGER"/>
+        <result property="lowpressure" column="lowpressure" jdbcType="INTEGER"/>
+        <result property="symptom" column="symptom" jdbcType="LONGVARCHAR"/>
+        <result property="attacktime" column="attacktime" jdbcType="TIMESTAMP"/>
+        <result property="applyid" column="applyid" jdbcType="INTEGER"/>
+        <result property="checkid" column="checkid" jdbcType="INTEGER"/>
+        <result property="applytime" column="applytime" jdbcType="TIMESTAMP"/>
+        <result property="checktime" column="checktime" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="typeid" column="typeid" jdbcType="INTEGER"/>
+        <result property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="patientName" column="pname" jdbcType="VARCHAR"/>
+        <result property="applyName" column="dname" jdbcType="VARCHAR"/>
+        <result property="checkName" column="cname" jdbcType="VARCHAR"/>
+
+        <result property="typeName" column="tname" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+
+        <collection property="fileList" ofType="com.entity.Files">
+            <id property="id" column="fid"/>
+            <result property="name" column="fname"/>
+            <result property="path" column="fpath"/>
+        </collection>
+
+    </resultMap>
+
+
+    <resultMap id="UserDiseaseCaseList" type="com.entity.vo.UserCaseTypeVO">
+        <result property="caseid" column="id"/>
+        <result property="typeName" column="name"/>
+    </resultMap>
+
+
+    <select id="selectUserDiseaseByUserId" resultMap="UserDiseaseCaseList">
+        select dca.id, dt.name
+        from disease_case dca
+                 left join disease_type dt on dt.id = dca.typeid
+        where dca.patientid = #{uid} and dca.result = 1
+    </select>
+
+
+    <select id="selectByCriteria" resultMap="DiseaseCaseVO">
+        select dc.id,
+        dc.num,
+        dc.sugar,
+        dc.highpressure,
+        dc.lowpressure,
+        dc.symptom,
+        dc.attacktime,
+        dc.applyid,
+        dc.checkid,
+        dc.applytime,
+        dc.checktime,
+        dc.remark,
+        dc.patientid,
+        dc.state,
+        u1.name pname,
+        u1.idcard,
+        u2.name dname,
+        u3.name cname,
+        dt.id typeid,
+        dt.name tname,
+        fl.id fid,
+        fl.name fname,
+        fl.path fpath
+        from disease_case dc
+        left join user u1 on u1.id = dc.patientid
+        left join user u2 on u2.id = dc.applyid
+        left join user u3 on u3.id = dc.checkid
+        left join cure_medicine cm on cm.cureid = dc.id
+        left join medicine md on md.id = cm.medicineid
+        left join disease_type dt on dc.typeid = dt.id
+        left join files fl on fl.infoid = dc.id and fl.module = '病例'
+        <where>
+            <if test="CaseCriteria.id != null">
+                and dc.id = #{CaseCriteria.id}
+            </if>
+            <if test="CaseCriteria.patientid != null">
+                and dc.patientid = #{CaseCriteria.patientid}
+            </if>
+            <if test="CaseCriteria.applyid != null">
+                and dc.applyid = #{CaseCriteria.applyid}
+            </if>
+            <if test="CaseCriteria.checkid != null">
+                and dc.checkid = #{CaseCriteria.checkid}
+            </if>
+            <if test="CaseCriteria.state != null">
+                and dc.state = #{CaseCriteria.state}
+            </if>
+            <if test="CaseCriteria.num != null and CaseCriteria.num != '' ">
+                and dc.num like '%${CaseCriteria.num}%'
+            </if>
+            <if test="CaseCriteria.patientname != null and CaseCriteria.patientname != '' ">
+                and u1.name like '%${CaseCriteria.patientname}%'
+            </if>
+            <if test="CaseCriteria.applyName != null and CaseCriteria.applyName != '' ">
+                and u2.name like '%${CaseCriteria.applyName}%'
+            </if>
+            <if test="CaseCriteria.checkName != null and CaseCriteria.checkName != '' ">
+                and u3.name like '%${CaseCriteria.checkName}%'
+            </if>
+            <if test="CaseCriteria.typename != null and CaseCriteria.typename != '' ">
+                and dt.name like '%${CaseCriteria.typename}%'
+            </if>
+            <if test="CaseCriteria.beginattack != null and CaseCriteria.endattack != null">
+                and dc.attacktime between #{CaseCriteria.beginattack} and #{CaseCriteria.endattack}
+            </if>
+            <if test="CaseCriteria.beginapply != null and CaseCriteria.endapply != null">
+                and dc.applytime between #{CaseCriteria.beginapply} and #{CaseCriteria.endapply}
+            </if>
+            <if test="CaseCriteria.begincheck != null and CaseCriteria.endcheck != null">
+                and dc.checktime between #{CaseCriteria.begincheck} and #{CaseCriteria.endcheck}
+            </if>
+
+        </where>
+        <if test="CaseCriteria.ordername != null and CaseCriteria.ordername != ''
+                and CaseCriteria.ordertype != null and CaseCriteria.ordertype != '' ">
+            order by ${CaseCriteria.ordername} ${CaseCriteria.ordertype}
+        </if>
+
+    </select>
+
+    <select id="statisticsType" resultMap="CaseStatistic">
+        select dt.id, dt.name tname, count(dt.id) tsum
+        from disease_type dt
+            left join disease_case dc on dc.typeid = dt.id
+            left join user u on u.id = dc.patientid
+        where dc.result = 1
+        <if test="StatictisCriteria.sexy != null ">
+            and u.age = #{StatictisCriteria.sexy}
+        </if>
+        <if test="StatictisCriteria.beginage != null and StatictisCriteria.endage != null">
+            and u.age between #{StatictisCriteria.beginage} and #{StatictisCriteria.endage}
+        </if>
+        <if test="StatictisCriteria.beginattack != null and StatictisCriteria.endattack != null">
+            and dc.attacktime between #{StatictisCriteria.beginattack} and #{StatictisCriteria.endattack}
+        </if>
+        group by dt.id
+        order by tsum desc
+        limit #{StatictisCriteria.limit}
+
+    </select>
+
+
+
+</mapper>

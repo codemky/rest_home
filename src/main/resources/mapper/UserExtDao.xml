@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserExtDao">
+
+    <resultMap type="com.entity.User" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="sexy" column="sexy" jdbcType="VARCHAR"/>
+        <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="addr" column="addr" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insertList" parameterType="com.entity.User">
+        insert into user(
+            username, password, name, age, sexy, idcard, phone, addr, role
+        )
+        VALUES
+        <foreach collection="users" index="index" item="item" separator=",">
+            ( trim(#{item.username}),trim(#{item.password}),#{item.name},#{item.age},#{item.sexy},
+            #{item.idcard},#{item.phone},#{item.addr},#{item.role})
+        </foreach>
+
+    </insert>
+
+</mapper>
